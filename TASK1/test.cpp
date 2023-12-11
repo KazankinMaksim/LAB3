@@ -20,10 +20,10 @@ SUITE(KeyTest){
         CHECK(modAlphaCipher(L"ПВО").encrypt(L"КАПИСЯТДВА")==L"ЪВЮШУНВЁРП");
     }
     TEST(test2) {
-        CHECK(modAlphaCipher(L"ПВОПВОПВО").encrypt(L"КАПИСЯТДВА")==L"ЪВЮШУНВЁРП");
+        CHECK(modAlphaCipher(L"ПВОПВОПВОПВО").encrypt(L"КАПИСЯТДВА")==L"ЪВЮШУНВЁРП");
     }
     TEST(test3) {
-        CHECK(modAlphaCipher(L"пво").encrypt(L"КАПИСЯТДВА")==L"ЪВЮШУНВЁАП");
+        CHECK(modAlphaCipher(L"пво").encrypt(L"КАПИСЯТДВА")==L"ЪВЮШУНВЁРП");
     }
     TEST(test4) {
         CHECK_THROW(modAlphaCipher(L"П1"), cipher_error);
@@ -58,13 +58,13 @@ SUITE(EncryptTest)
         CHECK(L"ВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯАБ" == p->encrypt(L"АБВГДЕЁЖЗИ ЙКЛМНОПРСТУФ ХЦЧШЩЪЫЬЭЮЯ"));
         }
     TEST_FIXTURE(KeyB_fixture, Numbers) {
-        CHECK(L"ВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯАБ" == p->encrypt(L"АБВГДЕЁЖЗИ22ЙКЛМНОП13РСТУФ58ХЦЧШЩЪЫЬЭЮЯ"));
+        CHECK(L"ВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯАБ" == p->encrypt(L"АБВГДЕЁЖЗИ555ЙКЛМНОП13РСТУФ66ХЦЧШЩЪЫЬЭЮЯ1945"));
         }
     TEST_FIXTURE(KeyB_fixture, Empty) {
         CHECK_THROW(p->encrypt(L""), cipher_error);
         }
     TEST_FIXTURE(KeyB_fixture, NoAlpha) {
-        CHECK_THROW(p->encrypt(L"123#5"), cipher_error);
+        CHECK_THROW(p->encrypt(L"123,,5"), cipher_error);
         }
     TEST(MaxShiftKey) {
         CHECK(L"ЯАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮ" == modAlphaCipher(L"Я").encrypt(L"АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ"));
@@ -90,7 +90,7 @@ SUITE(DecryptTest)
         CHECK_THROW(p->decrypt(L""), cipher_error);
         }
     TEST_FIXTURE(KeyB_fixture, NoAlpha) {
-        CHECK_THROW(p->decrypt(L"123#5"), cipher_error);
+        CHECK_THROW(p->decrypt(L"123,,5"), cipher_error);
         }
     TEST(MaxShiftKey) {
         CHECK(L"АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ" == modAlphaCipher(L"Я").decrypt(L"ЯАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮ"));

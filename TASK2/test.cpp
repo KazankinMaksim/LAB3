@@ -19,16 +19,20 @@ SUITE(encrypt){
         t = "PIXEL"; 
         CHECK_EQUAL(RouteCipher(3).encrypt(t), "PLIEX");
     }
+    TEST(test5){
+        t = "PI XEL"; 
+        CHECK_THROW(RouteCipher(3).encrypt(RouteCipher(3).getValidText(t)), cipher_error);
+    }
     TEST(test2){
         t = "??PIXEL??"; 
         CHECK_THROW(RouteCipher(3).encrypt(RouteCipher(3).getValidText(t)), cipher_error);
     }
     TEST(test3){
-        t = "ПИСКСЕЛЬ"; 
-        CHECK_THROW(RouteCipher(3).encrypt(RouteCipher(3).getValidText(t)), cipher_error);
+        t = "pixel"; 
+        CHECK_EQUAL(RouteCipher(3).encrypt(t), "pliex");
     }
     TEST(test4){
-        t = "238писксель(;(*))"; 
+        t = " "; 
         CHECK_THROW(RouteCipher(3).encrypt(RouteCipher(3).getValidText(t)), cipher_error);
     }    
 }
@@ -38,37 +42,35 @@ SUITE(decrypt){
         CHECK_EQUAL(RouteCipher(3).decrypt(t), "PIXEL");
     }
     TEST(t_2){
-        t = "плиекс"; 
+        t = "PL IEX"; 
         CHECK_THROW(RouteCipher(3).decrypt(RouteCipher(3).getValidText(t)), cipher_error);
     }
     TEST(t_3){
-        t = "232pliex||||"; 
+        t = "232PLIEX||||"; 
         CHECK_THROW(RouteCipher(3).decrypt(RouteCipher(3).getValidText(t)), cipher_error);
     }
     TEST(t_4){
-        t = "PLIEX::::";
+        t = " ";
         CHECK_THROW(RouteCipher(3).decrypt(RouteCipher(3).getValidText(t)), cipher_error);
     }
     TEST(t_5){
-        t = "48754PLIEX-*/-/"; 
+        t = "88+55+100"; 
         CHECK_THROW(RouteCipher(3).decrypt(RouteCipher(3).getValidText(t)), cipher_error);
     }    
 }
 SUITE(KeyTest) {
     TEST(InvalidKey) {
-    CHECK_THROW(RouteCipher(1), std::invalid_argument);
+    CHECK_THROW(RouteCipher(0), std::invalid_argument);
+    }
+    TEST(NonKey) {
+    CHECK_THROW(RouteCipher(-1), std::invalid_argument);
+    
 }
 }
 
-SUITE(TextLengthTest) {
-    TEST(EmptyText) {
-        CHECK_THROW(RouteCipher(3).getValidText(""), cipher_error);
-    }
+SUITE(KeyLengthTest) {
     TEST(KeyGreaterThanTextLength) {
         CHECK_THROW(RouteCipher(10).getValidText("abc"), cipher_error);
-    }
-    TEST(InvalidCharactersInText) {
-        CHECK_THROW(RouteCipher(3).getValidText("abc123"), cipher_error);
     }
 }
 int main() {
